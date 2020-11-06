@@ -1,3 +1,3 @@
-/Users/altino/CLionProjects/TPSO/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/altino/CLionProjects/TPSO/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/altino/CLionProjects/TPSO/cmake-build-debug/CMakeFiles/TPSO.dir
+/Users/altino/Documents/TP_SistemasOperacionais/TPSO/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/altino/Documents/TP_SistemasOperacionais/TPSO/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/altino/Documents/TP_SistemasOperacionais/TPSO/cmake-build-debug/CMakeFiles/TPSO.dir

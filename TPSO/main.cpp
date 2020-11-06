@@ -1,28 +1,71 @@
-using namespace std;
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <stdio.h>
+#include <string.h>
+#include <vector>
 
-void leituraArquivo(FILE *arquivo);
+using namespace std;
+
+struct estrutura
+{
+    string sequenciaReferencia;
+    int numeroPaginas;
+};
+
+void menu();
 
 int main() {
-    std::cout << "Teste" << std::endl;
-    FILE* arquivo;
-    char* valores[50];
-    char linhas[50];
-}
 
-void leituraArquivo(FILE* arquivo, char* valores, char linha[]) {
+    ifstream arquivo;
 
-    arquivo = fopen("entrada.txt","r");
+    string sequenciaReferencia;
+    string vazio;
+    string quadros;
 
-    if (arquivo == NULL)
-        printf("Problema na abertura do arquivo!");
+    arquivo.open("teste.txt");
 
-    while(fgets(linha, sizeof linha, arquivo) != NULL)
-    {
-        valores[i] = strdup(linha);
-        i++;
-        numPalavras++;
+    if(arquivo.is_open()) {
+        getline(arquivo, sequenciaReferencia);
+        //cout << sequenciaReferencia << endl;
+
+        getline(arquivo, vazio);
+
+        getline(arquivo, quadros);
+        arquivo.close();
+    } else {
+        cout << "Erro ao abrir o arquivo!" << endl;
     }
 
-    fclose(arquivo);
+    /*int tam = sequenciaReferencia.length();
+    char p[tam];
+    strcpy(p, sequenciaReferencia.c_str());
+
+    for(int i = 0; i< sizeof(p); i++){
+      if(p[i] != ',')
+      cout << "[" << p[i] << "]" << endl;
+    }*/
+
+    stringstream ss(quadros);
+    vector<int> v;
+
+    int hlp;
+    while(ss >> hlp)
+    {
+        v.push_back(hlp);
+    }
+
+    for(auto i: v)
+        cout << i*2 << '\n';
+
+
+    return 0;
+}
+
+void menu(){
+    cout << endl << "----- MENU -----" << endl;
+    cout << endl << " 1 - Importar arquivo" << endl;
+    cout << " 2 - Exportar arquivo" << endl;
+    cout << endl << "Escolha: ";
 }

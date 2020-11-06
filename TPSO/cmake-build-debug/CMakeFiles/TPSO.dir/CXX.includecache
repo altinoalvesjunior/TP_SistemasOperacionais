@@ -6,7 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/Users/altino/CLionProjects/TPSO/main.cpp
+/Users/altino/Documents/TP_SistemasOperacionais/TPSO/main.cpp
 iostream
+-
+sstream
+-
+string
+-
+vector
 -
 

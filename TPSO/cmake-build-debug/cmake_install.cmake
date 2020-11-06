@@ -1,4 +1,4 @@
-# Install script for directory: /Users/altino/CLionProjects/TPSO
+# Install script for directory: /Users/altino/Documents/TP_SistemasOperacionais/TPSO
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/altino/CLionProjects/TPSO/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/altino/Documents/TP_SistemasOperacionais/TPSO/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
