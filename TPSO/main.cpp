@@ -4,8 +4,6 @@
 #include <sstream>
 #include <stdio.h>
 #include <string.h>
-#include <vector>
-
 using namespace std;
 
 struct estrutura
@@ -22,7 +20,7 @@ int main() {
 
     string sequenciaReferencia;
     string vazio;
-    string quadros;
+    string linha3;
 
     arquivo.open("teste.txt");
 
@@ -32,20 +30,30 @@ int main() {
 
         getline(arquivo, vazio);
 
-        getline(arquivo, quadros);
+        getline(arquivo, linha3);
         arquivo.close();
     } else {
         cout << "Erro ao abrir o arquivo!" << endl;
     }
 
-    /*int tam = sequenciaReferencia.length();
+    //Converte string em vetor char, ainda necessita ajustes
+    int tam = sequenciaReferencia.length();
     char p[tam];
     strcpy(p, sequenciaReferencia.c_str());
 
+    cout << "Vetor: ";
     for(int i = 0; i< sizeof(p); i++){
-      if(p[i] != ',')
-      cout << "[" << p[i] << "]" << endl;
-    }*/
+        if(p[i] != ',' && p[i] != ' '){
+            cout << "[" << p[i] << "]";
+        }
+    }
+
+    // Converte linha do arquivo de quadros em inteiro
+    int quadros = stoi(linha3);
+    cout << endl << "A quantidade de quadros é: ";
+    cout << quadros << endl;
+
+    /*dif
 
     stringstream ss(quadros);
     vector<int> v;
@@ -57,8 +65,7 @@ int main() {
     }
 
     for(auto i: v)
-        cout << i*2 << '\n';
-
+    cout << i << '\n'; */
 
     return 0;
 }
