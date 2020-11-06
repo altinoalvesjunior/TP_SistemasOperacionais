@@ -2,10 +2,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <stdio.h>
-#include <string.h>
 #include <vector>
-#include <sstream>
 
 using namespace std;
 
@@ -17,18 +14,17 @@ int main() {
     ifstream arquivo;
 
     string linha1;
-    string vazio;
-    string linha3;
+    string linha2;
 
-    arquivo.open("teste.txt");
+    arquivo.open("/Users/altino/Documents/TP_SistemasOperacionais/TPSO/teste.txt");
 
     if(arquivo.is_open()) {
         getline(arquivo, linha1);
-        getline(arquivo, vazio);
-        getline(arquivo, linha3);
+        getline(arquivo, linha2);
         arquivo.close();
     } else {
         cout << "Erro ao abrir o arquivo!" << endl;
+        exit(1);
     }
 
     vector<int> sequenciaReferencia;
@@ -36,7 +32,7 @@ int main() {
 
     for (int i; sstream >> i;) {
         sequenciaReferencia.push_back(i);
-        if (sstream.peek() == ',' || sstream.peek() == ' ')
+        if (sstream.peek() == ',' || sstream.peek() == ' ' || sstream.peek() == '.')
             sstream.ignore();
     }
 
@@ -45,7 +41,7 @@ int main() {
     for (int i = 0; i < sequenciaReferencia.size(); i++)
         cout << "[" << sequenciaReferencia[i] << "]";
 
-    int quadros = stoi(linha3);
+    int quadros = stoi(linha2);
     cout << endl << "A quantidade de quadros é: ";
     cout << quadros << endl;
 
@@ -64,10 +60,10 @@ void menu(){
 void escreverArquivo() {
 
     ofstream arquivoSaida;
-    arquivoSaida.open("config.txt", ios_base::in);
+    arquivoSaida.open("/Users/altino/Documents/TP_SistemasOperacionais/TPSO/saida-teste.txt", ios_base::in);
 
-    if(!arquivoSaida)
-        arquivoSaida.open("config.txt");
+    if(!(arquivoSaida))
+        arquivoSaida.open("/Users/altino/Documents/TP_SistemasOperacionais/TPSO/saida-teste.txt");
 
     arquivoSaida << "Teste";
 

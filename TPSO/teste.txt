@@ -1,5 +1,2 @@
-Teste
-Arquivo
-Teste
-Teste
-FIM
+2, 3, 4, 6, 6, 7
+5
