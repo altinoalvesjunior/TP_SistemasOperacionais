@@ -9,10 +9,14 @@
 /Users/altino/Documents/TP_SistemasOperacionais/TPSO/main.cpp
 iostream
 -
-sstream
+fstream
 -
 string
 -
-vector
+sstream
+-
+stdio.h
+-
+string.h
 -
 

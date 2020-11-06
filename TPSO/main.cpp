@@ -4,7 +4,7 @@
 #include <sstream>
 #include <stdio.h>
 #include <string.h>
-#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
 
 using namespace std;
 
@@ -15,6 +15,7 @@ struct estrutura
 };
 
 void menu();
+void escreverArquivo();
 
 void convert_array(string str){
     int str_length = str.length();
@@ -51,9 +52,7 @@ int main() {
     if(arquivo.is_open()) {
         getline(arquivo, sequenciaReferencia);
         //cout << sequenciaReferencia << endl;
-
         getline(arquivo, vazio);
-
         getline(arquivo, linha3);
         arquivo.close();
     } else {
@@ -91,6 +90,8 @@ int main() {
     for(auto i: v)
     cout << i << '\n'; */
 
+    escreverArquivo();
+
     return 0;
 }
 
@@ -99,4 +100,17 @@ void menu(){
     cout << endl << " 1 - Importar arquivo" << endl;
     cout << " 2 - Exportar arquivo" << endl;
     cout << endl << "Escolha: ";
+}
+
+void escreverArquivo() {
+
+    ofstream arquivoSaida;
+    arquivoSaida.open("config.txt", ios_base::in);
+
+    if(!arquivoSaida)
+        arquivoSaida.open("config.txt");
+
+    arquivoSaida << "Teste";
+
+    arquivoSaida.close();
 }
