@@ -8,6 +8,45 @@ using namespace std;
 
 int quadros;
 
+bool BuscaMemoria(int *vetor, int valor){
+    for (int i = 0; i < quadros; i++){
+        if (valor == vetor[i])
+            return true;
+        else
+            return false;
+    }
+
+}
+
+void FIFO(vector <int> ListaProcessos){
+    int MEMORIA[quadros];
+    int FaltaPag = 0;
+    int numProcessos = ListaProcessos.size();
+    int i;
+    int count=0;
+
+    if (numProcessos == 0){
+        puts("Não existem processos");
+    }
+
+    for(i=0 ; i < numProcessos ; i++){
+        if(!BuscaMemoria(MEMORIA, ListaProcessos[i])){
+            if(count == quadros){
+                count = 0;
+            }
+            MEMORIA[count] = ListaProcessos[i];
+            FaltaPag++;
+            count++;
+        }
+        for(int i=0 ; i<quadros ; i++){
+            cout << MEMORIA[i] << " ";
+        }
+        puts("");
+
+    }
+
+    cout << "FIFO " << FaltaPag << endl;
+}
 
 void menu();
 vector<int> lerArquivo(std::ifstream& arquivo);
