@@ -3,99 +3,32 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <queue>
 
 using namespace std;
-
+vector <int> ListaProcessos;
 int quadros;
-
-bool BuscaMemoria(int *vetor, int valor){
-    for (int i = 0; i < quadros; i++){
-        if (valor == vetor[i])
-            return true;
-        else
-            return false;
-    }
-
-}
-
-void FIFO(vector <int> ListaProcessos){
-    int MEMORIA[quadros];
-    int FaltaPag = 0;
-    int numProcessos = ListaProcessos.size();
-    int i;
-    int count=0;
-
-    if (numProcessos == 0){
-        puts("Não existem processos");
-    }
-
-    for(i=0 ; i < numProcessos ; i++){
-        if(!BuscaMemoria(MEMORIA, ListaProcessos[i])){
-            if(count == quadros){
-                count = 0;
-            }
-            MEMORIA[count] = ListaProcessos[i];
-            FaltaPag++;
-            count++;
-        }
-        for(int i=0 ; i<quadros ; i++){
-            cout << MEMORIA[i] << " ";
-        }
-        puts("");
-
-    }
-
-    cout << "FIFO " << FaltaPag << endl;
-}
 
 void menu();
 vector<int> lerArquivo(std::ifstream& arquivo);
 void escreverArquivo();
+void FIFO(vector<int> paginas);
 
 int main() {
 
     ifstream arquivo;
 
-    /*string linha1;
-    string linha2;
-
-    arquivo.open("/Users/altino/Documents/TP_SistemasOperacionais/TPSO/teste.txt");
-
-    if(arquivo.is_open()) {
-        getline(arquivo, linha1);
-        getline(arquivo, linha2);
-        arquivo.close();
-    } else {
-        cout << "Erro ao abrir o arquivo!" << endl;
-        exit(1);
-    }
-
-    vector<int> sequenciaReferencia;
-    stringstream sstream(linha1);
-
-    for (int i; sstream >> i;) {
-        sequenciaReferencia.push_back(i);
-        if (sstream.peek() == ',' || sstream.peek() == ' ' || sstream.peek() == '.')
-            sstream.ignore();
-    }
-
-    cout << "O vetor eh: ";
-
-    for (int i = 0; i < sequenciaReferencia.size(); i++)
-        cout << "[" << sequenciaReferencia[i] << "]";
-
-    int quadros = stoi(linha2);
-    cout << endl << "A quantidade de quadros é: ";
-    cout << quadros << endl;*/
-
-    escreverArquivo();
-
     vector <int> sequencia;
     sequencia = lerArquivo(arquivo);
 
-   /* for(int i = 0; i < sequencia.size(); i++) {
+    cout << "Sequência: ";
+
+    for(int i = 0; i < sequencia.size(); i++)
         cout << "[" <<  sequencia[i] << "]";
-    }*/
+
+    cout << endl << "Número de Quadros: " << quadros;
+
+    cout << endl << endl;
 
     FIFO(sequencia);
 
@@ -153,3 +86,91 @@ void escreverArquivo() {
     arquivoSaida.close();
 }
 
+void FIFO(vector<int> paginas) {
+
+    vector<int> s;
+    int encontrou = 0;
+    int indice = 0;
+    queue<int> filaAux;
+
+    int erros = 0;
+
+    for (int i=0; i<paginas.size(); i++)
+    {
+        if (s.size() < quadros)
+        {
+            for(int j=0 ; j<s.size() ; j++)
+            {
+                if(s[j] == paginas[i])
+                    encontrou = 1;
+            }
+
+            if(encontrou == 0) {
+                s.push_back(paginas[i]);
+                printf("%02d     ", paginas[i]);
+
+                for(int j=0 ; j<s.size() ; j++){
+                    printf("%d ", s[j]);
+                }
+                printf("\n");
+
+                filaAux.push(paginas[i]);
+            }
+
+            else {
+                printf("%02d     ", paginas[i]);
+
+                for(int j = 0; j < s.size(); j++){
+                    printf("%d ", s[j]);
+                }
+
+                printf("\n");
+            }
+
+            encontrou = 0;
+        }
+
+        else
+        {
+
+            for(int j=0 ; j<s.size() ; j++)
+                if(s[j] == paginas[i])
+                    encontrou = 1;
+
+            if(encontrou == 0) {
+                int val = filaAux.front();
+
+                filaAux.pop();
+                for(int j=0 ; j<s.size() ; j++)
+                {
+                    if(s[j] == val)
+                    {
+                        indice = j;
+                        break;
+                    }
+                }
+                s[indice] = paginas[i];
+
+                filaAux.push(paginas[i]);
+                printf("%02d F   ",paginas[i]);
+                for(int j=0 ; j<s.size() ; j++){
+                    printf("%d ",s[j]);
+                }
+                printf("\n");
+                erros++;
+            }
+
+            else {
+                printf("%02d     ",paginas[i]);
+
+                for(int j=0 ; j<s.size() ; j++){
+                    printf("%d ",s[j]);
+                }
+                printf("\n");
+            }
+            encontrou = 0;
+        }
+    }
+    printf("-------------------------------------\n"
+           "Number of page faults = %d\n", erros);
+}
