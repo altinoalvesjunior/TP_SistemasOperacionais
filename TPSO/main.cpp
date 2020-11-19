@@ -1,50 +1,69 @@
+#include<stdio.h>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <sstream>
 #include <vector>
 #include <queue>
+#include<math.h>
 
 using namespace std;
 
-vector <int> ListaProcessos;
 int quadros;
+vector <int> sequencia;
 
 void menu();
 vector<int> lerArquivo(std::ifstream& arquivo);
-void escreverArquivo();
+void escreverArquivo(int);
 void FIFO(vector<int> paginas);
 void OPT(vector<int> paginas);
 int encontrarProximo(vector<int> sequencia, int dado, int curr);
-void rodapeArquivo (int erros, int requisicoes, int taxaErro);
+void rodapeArquivo (int acertos, int erros, int requisicoes, float taxaErro);
 
 int main() {
-
     ifstream arquivo;
+    int option;
 
-    vector <int> sequencia;
-    sequencia = lerArquivo(arquivo);
+    do{
+        cout << endl << "\t----- MENU -----" << endl;
+        cout << endl << " 1 - Importar arquivo" << endl;
+        cout << " 2 - Executar FIFO" << endl;
+        cout << " 3 - Executar OPT" << endl;
+        cout << " 4 - Finalizar" << endl;
+        cout << endl << "Escolha: ";
+        cin >> option;
 
-    cout << "Sequência: ";
+        switch(option){
+            case 1:
+                sequencia = lerArquivo(arquivo);
+            break;
+            case 2:
+                FIFO(sequencia);
+            break;
+            case 3:
+                OPT(sequencia);
+            break;
+            case 4:
+                cout << "\n\t---- Algoritmo de Substituicao de Pagina ----\n";
+            break;
+            default:
+                cout << "\n Escolha uma opcao valida!\n";
+            break;
+        }
+        printf("-------------------------------------\n");
+    }while(option != 4);
+
+    cout << "Sequencia: ";
 
     for(int i = 0; i < sequencia.size(); i++)
         cout << "[" <<  sequencia[i] << "]";
 
-    cout << endl << "Número de Quadros: " << quadros;
+    cout << endl << "Numero de Quadros: " << quadros;
 
     cout << endl << endl;
 
-    FIFO(sequencia);
-    OPT(sequencia);
-
     return 0;
-}
-
-void menu(){
-    cout << endl << "----- MENU -----" << endl;
-    cout << endl << " 1 - Importar arquivo" << endl;
-    cout << " 2 - Exportar arquivo" << endl;
-    cout << endl << "Escolha: ";
 }
 
 vector<int> lerArquivo(std::ifstream& arquivo) {
@@ -52,7 +71,7 @@ vector<int> lerArquivo(std::ifstream& arquivo) {
     string linha1;
     string linha2;
 
-    arquivo.open("/Users/altino/Documents/TP_SistemasOperacionais/TPSO/teste.txt");
+    arquivo.open("teste.txt");
 
     if(arquivo.is_open()) {
         getline(arquivo, linha1);
@@ -62,7 +81,7 @@ vector<int> lerArquivo(std::ifstream& arquivo) {
         cout << "Erro ao abrir o arquivo!" << endl;
         exit(1);
     }
-
+    cout << "\nArquivo importado" << endl;
     vector<int> vetor;
     stringstream sstream(linha1);
 
@@ -81,7 +100,7 @@ vector<int> lerArquivo(std::ifstream& arquivo) {
 void escreverArquivo(int conteudo) {
 
     ofstream arquivoSaida;
-    arquivoSaida.open("/Users/altino/Documents/TP_SistemasOperacionais/TPSO/saida-teste.txt", std::ios_base::app);
+    arquivoSaida.open("saida-teste.txt", std::ios_base::app);
 
     /*if(!(arquivoSaida))
         arquivoSaida.open("/Users/altino/Documents/TP_SistemasOperacionais/TPSO/saida-teste.txt");*/
@@ -98,7 +117,7 @@ void escreverArquivo(int conteudo) {
 void escreverStringArquivo(string conteudo) {
 
     ofstream arquivoSaida;
-    arquivoSaida.open("/Users/altino/Documents/TP_SistemasOperacionais/TPSO/saida-teste.txt", std::ios_base::app);
+    arquivoSaida.open("saida-teste.txt", std::ios_base::app);
 
     /*if(!(arquivoSaida))
         arquivoSaida.open("/Users/altino/Documents/TP_SistemasOperacionais/TPSO/saida-teste.txt");*/
@@ -108,14 +127,24 @@ void escreverStringArquivo(string conteudo) {
     arquivoSaida.close();
 }
 
-void rodapeArquivo (int erros, int requisicoes, int taxaErro) {
-    escreverStringArquivo("ACERTOS\n");
-    escreverStringArquivo("ERROS\n");
+void escreverFloatArquivo(float conteudo) {
+
+    ofstream arquivoSaida;
+    arquivoSaida.open("saida-teste.txt", std::ios_base::app);
+    arquivoSaida << std::setprecision(2) << conteudo;
+
+    arquivoSaida.close();
+}
+
+void rodapeArquivo (int acertos, int erros, int requisicoes, float taxaErro) {
+    escreverStringArquivo("\nACERTOS\n");
+    escreverArquivo(acertos);
+    escreverStringArquivo("\nERROS\n");
     escreverArquivo(erros);
-    escreverStringArquivo("TOTAL REQUISICOES\n");
+    escreverStringArquivo("\nTOTAL REQUISICOES\n");
     escreverArquivo(requisicoes);
-    escreverStringArquivo("TAXA DE ERRO\n");
-    escreverArquivo(taxaErro);
+    escreverStringArquivo("\nTAXA DE ERRO\n");
+    escreverFloatArquivo(taxaErro);
 }
 
 void FIFO(vector<int> paginas) {
@@ -128,7 +157,7 @@ void FIFO(vector<int> paginas) {
 
     int erros = 0;
 
-    escreverStringArquivo("EVOLUCAO\n");
+    escreverStringArquivo("\t----- EVOLUCAO -----\t\n");
 
     for (int i=0; i<paginas.size(); i++)
     {
@@ -142,10 +171,11 @@ void FIFO(vector<int> paginas) {
 
             if(encontrou == 0) {
                 s.push_back(paginas[i]);
-                printf("%02d     ", paginas[i]);
+                printf("%2d F   ", paginas[i]);
                 requisicoes++;
+                erros++;
 
-                for(int j=0 ; j<s.size() ; j++){
+                for(int j=0 ; j<s.size(); j++){
                     printf("%d ", s[j]);
                     escreverArquivo(round(s[j]));
                 }
@@ -156,7 +186,7 @@ void FIFO(vector<int> paginas) {
             }
 
             else {
-                printf("%02d     ", paginas[i]);
+                printf("%2d     ", paginas[i]);
                 requisicoes++;
 
                 for(int j = 0; j < s.size(); j++){
@@ -192,7 +222,7 @@ void FIFO(vector<int> paginas) {
                 s[indice] = paginas[i];
 
                 filaAux.push(paginas[i]);
-                printf("%02d F   ",paginas[i]);
+                printf("%2d F   ",paginas[i]);
                 requisicoes++;
                 for(int j=0 ; j<s.size() ; j++){
                     printf("%d ",s[j]);
@@ -204,7 +234,7 @@ void FIFO(vector<int> paginas) {
             }
 
             else {
-                printf("%02d     ",paginas[i]);
+                printf("%2d     ",paginas[i]);
                 requisicoes++;
                 for(int j=0 ; j<s.size() ; j++){
                     printf("%d ",s[j]);
@@ -217,15 +247,10 @@ void FIFO(vector<int> paginas) {
         }
     }
 
-    string d = std::to_string((erros/requisicoes));
+    float taxaErro = ((float) erros/(float) paginas.size());
+    int acertos = (paginas.size() - erros);
 
-    escreverStringArquivo("ACERTOS\n");
-    escreverStringArquivo("ERROS\n");
-    escreverArquivo(erros);
-    escreverStringArquivo("TOTAL REQUISICOES\n");
-    escreverArquivo(requisicoes);
-    escreverStringArquivo("TAXA DE ERRO\n");
-    escreverStringArquivo(d);
+    rodapeArquivo(acertos, erros, requisicoes, taxaErro);
 
     printf("-------------------------------------\n"
            "Erros = %d\n", erros);
@@ -283,7 +308,7 @@ void OPT(vector<int> paginas) {
                         closest = x;
                     }
                 }
-                cout << "Replacing: " << dadoPagina[closest] << endl;
+                cout << endl;
                 escreverArquivo(-1);
                 dadoPagina[closest] = paginas[i];
                 order[closest] = encontrarProximo(paginas, dadoPagina[closest], i);
@@ -295,13 +320,10 @@ void OPT(vector<int> paginas) {
             escreverArquivo(-1);
         }
     }
-    cout << "Number of faults: " << erros << endl;
-    cout << "Page fault rate: " << erros << "/" << paginas.size() << endl;
 
-    escreverStringArquivo("ACERTOS\n");
-    escreverStringArquivo("ERROS\n");
-    escreverArquivo(erros);
-    escreverStringArquivo("TOTAL REQUISICOES\n");
-    escreverArquivo(paginas.size());
-    escreverStringArquivo("TAXA DE ERRO\n");
+    int acertos = (paginas.size() - erros);
+    float taxaErro = ((float) erros/(float) paginas.size());
+
+    rodapeArquivo(acertos, erros, paginas.size(), taxaErro);
+
 }
