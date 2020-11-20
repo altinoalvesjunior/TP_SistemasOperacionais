@@ -20,13 +20,15 @@ void FIFO(vector<int> paginas);
 void OPT(vector<int> paginas);
 int encontrarProximo(vector<int> sequencia, int dado, int curr);
 void rodapeArquivo (int acertos, int erros, int requisicoes, float taxaErro);
+void FinalizarAlgoritmo();
 
 int main() {
     ifstream arquivo;
     int option;
 
     do{
-        cout << endl << "\t----- MENU -----" << endl;
+        cout << endl << "\t\t----- MENU -----" << endl;
+        cout << "---- Algoritmo de Substituicao de Pagina ----" << endl;
         cout << endl << " 1 - Importar arquivo" << endl;
         cout << " 2 - Executar FIFO" << endl;
         cout << " 3 - Executar OPT" << endl;
@@ -37,15 +39,23 @@ int main() {
         switch(option){
             case 1:
                 sequencia = lerArquivo(arquivo);
+                cout << "Sequencia: ";
+                for(int i = 0; i < sequencia.size(); i++)
+                    cout << "[" <<  sequencia[i] << "]";
+                cout << endl << "Numero de Quadros: " << quadros;
+                cout << endl << endl;
             break;
             case 2:
+                cout << "\nEVOLUCAO FIFO" << endl;
                 FIFO(sequencia);
             break;
             case 3:
+                cout << "\nEVOLUCAO OPT" << endl;
                 OPT(sequencia);
             break;
             case 4:
-                cout << "\n\t---- Algoritmo de Substituicao de Pagina ----\n";
+                FinalizarAlgoritmo();
+                cout << "\n\tSaindo do programa!\n";
             break;
             default:
                 cout << "\n Escolha uma opcao valida!\n";
@@ -53,16 +63,6 @@ int main() {
         }
         printf("-------------------------------------\n");
     }while(option != 4);
-
-    cout << "Sequencia: ";
-
-    for(int i = 0; i < sequencia.size(); i++)
-        cout << "[" <<  sequencia[i] << "]";
-
-    cout << endl << "Numero de Quadros: " << quadros;
-
-    cout << endl << endl;
-
     return 0;
 }
 
@@ -81,7 +81,6 @@ vector<int> lerArquivo(std::ifstream& arquivo) {
         cout << "Erro ao abrir o arquivo!" << endl;
         exit(1);
     }
-    cout << "\nArquivo importado" << endl;
     vector<int> vetor;
     stringstream sstream(linha1);
 
@@ -100,10 +99,7 @@ vector<int> lerArquivo(std::ifstream& arquivo) {
 void escreverArquivo(int conteudo) {
 
     ofstream arquivoSaida;
-    arquivoSaida.open("saida-teste.txt", std::ios_base::app);
-
-    /*if(!(arquivoSaida))
-        arquivoSaida.open("/Users/altino/Documents/TP_SistemasOperacionais/TPSO/saida-teste.txt");*/
+    arquivoSaida.open("saida.txt", std::ios_base::app);
     if(conteudo == -1){
         arquivoSaida << endl;
     }
@@ -117,10 +113,10 @@ void escreverArquivo(int conteudo) {
 void escreverStringArquivo(string conteudo) {
 
     ofstream arquivoSaida;
-    arquivoSaida.open("saida-teste.txt", std::ios_base::app);
+    arquivoSaida.open("saida.txt", std::ios_base::app);
 
-    /*if(!(arquivoSaida))
-        arquivoSaida.open("/Users/altino/Documents/TP_SistemasOperacionais/TPSO/saida-teste.txt");*/
+    if(!(arquivoSaida))
+        arquivoSaida.open("saida.txt");
 
     arquivoSaida << conteudo;
 
@@ -130,7 +126,7 @@ void escreverStringArquivo(string conteudo) {
 void escreverFloatArquivo(float conteudo) {
 
     ofstream arquivoSaida;
-    arquivoSaida.open("saida-teste.txt", std::ios_base::app);
+    arquivoSaida.open("saida.txt", std::ios_base::app);
     arquivoSaida << std::setprecision(2) << conteudo;
 
     arquivoSaida.close();
@@ -145,7 +141,22 @@ void rodapeArquivo (int acertos, int erros, int requisicoes, float taxaErro) {
     escreverArquivo(requisicoes);
     escreverStringArquivo("\nTAXA DE ERRO\n");
     escreverFloatArquivo(taxaErro);
+
+    escreverStringArquivo("\n---------------------------------\n");
 }
+
+void FinalizarAlgoritmo(){
+    cout << "Deseja apagar o arquivo de saida? --- (saida.txt) --- " << endl;
+    cout << endl << " 1 - Sim" << endl << " 2 - Nao" << endl << " Escolha: ";
+    int deleta;
+    cin >> deleta;
+
+    if(deleta == 1) {
+        std::remove("saida.txt");
+    }
+}
+
+
 
 void FIFO(vector<int> paginas) {
 
@@ -157,7 +168,7 @@ void FIFO(vector<int> paginas) {
 
     int erros = 0;
 
-    escreverStringArquivo("\t----- EVOLUCAO -----\t\n");
+    escreverStringArquivo("EVOLUÇÃO FIFO\n");
 
     for (int i=0; i<paginas.size(); i++)
     {
@@ -171,7 +182,6 @@ void FIFO(vector<int> paginas) {
 
             if(encontrou == 0) {
                 s.push_back(paginas[i]);
-                printf("%2d F   ", paginas[i]);
                 requisicoes++;
                 erros++;
 
@@ -186,7 +196,6 @@ void FIFO(vector<int> paginas) {
             }
 
             else {
-                printf("%2d     ", paginas[i]);
                 requisicoes++;
 
                 for(int j = 0; j < s.size(); j++){
@@ -222,7 +231,6 @@ void FIFO(vector<int> paginas) {
                 s[indice] = paginas[i];
 
                 filaAux.push(paginas[i]);
-                printf("%2d F   ",paginas[i]);
                 requisicoes++;
                 for(int j=0 ; j<s.size() ; j++){
                     printf("%d ",s[j]);
@@ -234,7 +242,6 @@ void FIFO(vector<int> paginas) {
             }
 
             else {
-                printf("%2d     ",paginas[i]);
                 requisicoes++;
                 for(int j=0 ; j<s.size() ; j++){
                     printf("%d ",s[j]);
@@ -247,13 +254,16 @@ void FIFO(vector<int> paginas) {
         }
     }
 
-    float taxaErro = ((float) erros/(float) paginas.size());
-    int acertos = (paginas.size() - erros);
+    float taxaErro = ((float) erros/(float) requisicoes);
+    int acertos = (requisicoes - erros);
 
     rodapeArquivo(acertos, erros, requisicoes, taxaErro);
 
     printf("-------------------------------------\n"
-           "Erros = %d\n", erros);
+           "Erros = %d\n"
+           "Acertos = %d\n"
+           "Requisicoes = %d\n"
+           "Taxa de erro = %.2f\n", erros, acertos, requisicoes, taxaErro);
 }
 
 int encontrarProximo(vector<int> sequencia, int dado, int curr) {
@@ -276,6 +286,7 @@ void OPT(vector<int> paginas) {
     bool encontrou = false;
     int closest = 0;
 
+    escreverStringArquivo("EVOLUÇÃO OPT");
     for (int i = 0; i < paginas.size(); i++) {
 
         for (int j = 0; j < order.size(); j++)
@@ -293,7 +304,6 @@ void OPT(vector<int> paginas) {
         }
 
         if (!(encontrou)) {
-            // cout << "Page fault. ";
             erros++;
             if (dadoPagina.size() < quadros) {
                 dadoPagina.push_back(paginas[i]);
@@ -315,7 +325,6 @@ void OPT(vector<int> paginas) {
             }
         }
         else {
-            //cout << "Found" << endl;
             cout << endl;
             escreverArquivo(-1);
         }
@@ -326,4 +335,9 @@ void OPT(vector<int> paginas) {
 
     rodapeArquivo(acertos, erros, paginas.size(), taxaErro);
 
+    printf("-------------------------------------\n"
+           "Erros = %d\n"
+           "Acertos = %d\n"
+           "Requisicoes = %d\n"
+           "Taxa de erro = %.2f\n", erros, acertos, paginas.size(), taxaErro);
 }
