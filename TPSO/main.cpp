@@ -24,7 +24,9 @@ void FinalizarAlgoritmo();
 
 int main() {
     ifstream arquivo;
+
     int option;
+    string nomeArquivo;
 
     do{
         cout << endl << "\t\t----- MENU -----" << endl;
@@ -38,7 +40,10 @@ int main() {
 
         switch(option){
             case 1:
-                sequencia = lerArquivo(arquivo);
+                cout << "Digite o nome do Arquivo (com extensão: .txt): ";
+                cin >> nomeArquivo;
+
+                sequencia = lerArquivo(arquivo, nomeArquivo);
                 cout << "Sequencia: ";
                 for(int i = 0; i < sequencia.size(); i++)
                     cout << "[" <<  sequencia[i] << "]";
@@ -66,12 +71,12 @@ int main() {
     return 0;
 }
 
-vector<int> lerArquivo(std::ifstream& arquivo) {
+vector<int> lerArquivo(std::ifstream& arquivo, string nomeArquivo) {
 
     string linha1;
     string linha2;
 
-    arquivo.open("teste.txt");
+    arquivo.open(nomeArquivo);
 
     if(arquivo.is_open()) {
         getline(arquivo, linha1);
